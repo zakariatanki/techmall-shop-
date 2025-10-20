@@ -1,0 +1,59 @@
+CREATE DATABASE IF NOT exists techmall;
+USE techmall;
+
+CREATE TABLE admins (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(50)
+);
+
+CREATE TABLE clients (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(255)
+);
+
+CREATE TABLE categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    description TEXT
+);
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150),
+    description TEXT,
+    price DECIMAL(10,2),
+    stock INT,
+    image VARCHAR(200),
+    category_id INT,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE orders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    client_id INT,
+    total DECIMAL(10,2),
+    status VARCHAR(20),
+    date_order DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+);
+
+
+INSERT INTO admins (name, email, password) VALUES 
+('Admin', 'admin@techmall.com', 'admin');
+
+INSERT INTO categories (name, description) VALUES
+('Accessories', 'Keyboards, mice, cables'),
+('Computers', 'Desktop computers'),
+('Audio', 'Headphones and speakers'),
+('TV', 'TVs and monitors');
+
+INSERT INTO products (name, price, category_id, description, stock, image) VALUES
+('Wireless Keyboard', 119, 1, 'Ergonomic keyboard', 15, 'keyboard.jpg'),
+('USB Cable', 40, 1, 'USB 2.0 cable', 50, 'usb.jpg'),
+('TV 32"', 949, 4, 'LED TV 32 inch', 8, 'tv.jpg'),
+('Gaming Headset', 119, 3, 'Gaming headphones', 12, 'headset.jpg');
+UPDATE admins SET password = 'admin123'  WHERE email = 'admin@techmall.com';
